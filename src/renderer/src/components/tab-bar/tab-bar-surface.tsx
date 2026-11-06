@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { ProjectedAgentMenuItems } from './QuickLaunchButton'
+import { ClaudeAccountLaunchSubmenu } from './ClaudeAccountLaunchSubmenu'
 import { TabBarAgentPickerEntry } from './TabBarAgentPickerEntry'
 import { TabStripScrollIndicator } from './TabStripScrollIndicator'
 import { TabStripTooltipProvider } from './TabStripTooltipProvider'
@@ -88,6 +89,7 @@ export function renderTabBarSurface({
     launchAgentFromNewTabEntry,
     runPendingNewTabMenuFocusAfterClose,
     queueNewActiveTerminalFocusAfterNewTabMenuClose,
+    queueTerminalTabFocusAfterNewTabMenuClose,
     queueFocusAfterNewTabMenuClose,
     showStaticCreateMenuItems
   } = createMenu
@@ -291,6 +293,12 @@ export function renderTabBarSurface({
                 onSelectPickerAgent={selectPickerAgent}
                 hidePickerSearch={!terminalOnly && Boolean(onOpenEntry)}
                 runLaunch={launchAgentRow}
+              />
+              <ClaudeAccountLaunchSubmenu
+                agentMenu={agentMenu}
+                worktreeId={worktreeId}
+                groupId={resolvedGroupId}
+                onFocusTerminal={queueTerminalTabFocusAfterNewTabMenuClose}
               />
             </>
           ) : null}

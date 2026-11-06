@@ -23597,5 +23597,12 @@
   "wslDistroHold": {
     "terminalStopped": "A distribuição WSL {{distro}} está parada, então o Orca não iniciou este terminal. Inicie a distribuição e tente novamente.",
     "terminalUnverifiable": "O Orca não conseguiu verificar se a distribuição WSL {{distro}} está em execução, então não iniciou este terminal. Inicie a distribuição e tente novamente."
+  },
+  "claudeAccountLaunch": {
+    "menu": "Claude com conta",
+    "selected": "Conta selecionada",
+    "started": "Claude iniciado com {{value0}}",
+    "unsupported": "Escolher uma conta do Claude só funciona em terminais locais.",
+    "unsupportedDetail": "Troque a conta selecionada para iniciar o Claude com ela neste espaço de trabalho."
   }
 }

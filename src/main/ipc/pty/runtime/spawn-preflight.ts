@@ -1,4 +1,7 @@
-import { withClaudeProfileTerminalEnv } from '../../../claude-accounts/claude-profile-installed-router'
+import {
+  preparePinnedClaudeLaunchAuth,
+  withClaudeProfileTerminalEnv
+} from '../../../claude-accounts/claude-profile-installed-router'
 import type { PtySpawnResult } from '../../../providers/pty-provider-contract'
 import { LocalPtyProvider } from '../../../providers/local-pty/local-pty-provider'
 import { isValidTerminalTabId } from '../../../../shared/workspace-layout/terminal-tab-id'
@@ -101,10 +104,15 @@ export async function prepareRuntimePtySpawn(
   ctx.wslHoldReadAnchor = target.wslHoldReadAnchor
   ctx.codexSelectionTarget = target.codexSelectionTarget
   args.env = withClaudeProfileTerminalEnv(args.env, ctx.codexSelectionTarget)
+  // A launch that chose its Claude account keeps it; otherwise the selected account's auth applies.
+  const pinnedClaudeAuth = ctx.isClaudeLaunch
+    ? await preparePinnedClaudeLaunchAuth(args.env, ctx.codexSelectionTarget)
+    : null
   ctx.claudeAuth =
-    ctx.isClaudeLaunch && ctx.deps.prepareClaudeAuth
+    pinnedClaudeAuth ??
+    (ctx.isClaudeLaunch && ctx.deps.prepareClaudeAuth
       ? await ctx.deps.prepareClaudeAuth(ctx.codexSelectionTarget)
-      : null
+      : null)
 
   ctx.shouldPersistHostSessionBinding = args.persistHostSessionBinding === true
   if (ctx.shouldPersistHostSessionBinding) {

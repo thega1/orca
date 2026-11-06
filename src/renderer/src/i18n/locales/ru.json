@@ -23969,5 +23969,12 @@
     "sameAsTextDefault": "Как по умолчанию · {{value0}}",
     "chatChoicesNote": "Выбор модели или уровня усилий {{agent}} без флага CLI применяется к чатам.",
     "composedChoicesNote": "Выбранные уровень усилий и скорость {{agent}} включаются в аргумент модели."
+  },
+  "claudeAccountLaunch": {
+    "menu": "Claude с аккаунтом",
+    "selected": "Выбранный аккаунт",
+    "started": "Claude запущен с {{value0}}",
+    "unsupported": "Выбрать аккаунт Claude можно только для локальных терминалов.",
+    "unsupportedDetail": "Переключите выбранный аккаунт, чтобы запустить Claude с ним в этом рабочем пространстве."
   }
 }

@@ -22935,5 +22935,12 @@
   "wslDistroHold": {
     "terminalStopped": "WSL ディストリビューション {{distro}} が停止しているため、Orca はこのターミナルを起動しませんでした。ディストリビューションを起動してから、もう一度お試しください。",
     "terminalUnverifiable": "WSL ディストリビューション {{distro}} が実行中か確認できなかったため、Orca はこのターミナルを起動しませんでした。ディストリビューションを起動してから、もう一度お試しください。"
+  },
+  "claudeAccountLaunch": {
+    "menu": "アカウントを選んで Claude を起動",
+    "selected": "選択中のアカウント",
+    "started": "{{value0}} で Claude を起動しました",
+    "unsupported": "Claude アカウントを選べるのはローカルターミナルだけです。",
+    "unsupportedDetail": "このワークスペースでそのアカウントの Claude を起動するには、選択中のアカウントを切り替えてください。"
   }
 }

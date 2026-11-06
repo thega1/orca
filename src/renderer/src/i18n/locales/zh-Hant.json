@@ -22885,5 +22885,12 @@
     "sameAsTextDefault": "與預設值相同 · {{value0}}",
     "chatChoicesNote": "沒有 CLI 旗標的 {{agent}} 模型或推理力度選項適用於聊天。",
     "composedChoicesNote": "{{agent}} 的推理力度和速度選項包含在模型引數中。"
+  },
+  "claudeAccountLaunch": {
+    "menu": "用指定帳號啟動 Claude",
+    "selected": "目前選取的帳號",
+    "started": "已用 {{value0}} 啟動 Claude",
+    "unsupported": "只有本機終端機可以選擇 Claude 帳號。",
+    "unsupportedDetail": "若要在這個工作區用該帳號啟動 Claude，請切換目前選取的帳號。"
   }
 }

@@ -1,4 +1,7 @@
-import { withClaudeProfileTerminalEnv } from '../../../claude-accounts/claude-profile-installed-router'
+import {
+  preparePinnedClaudeLaunchAuth,
+  withClaudeProfileTerminalEnv
+} from '../../../claude-accounts/claude-profile-installed-router'
 import { mintPtySessionId } from '../../../daemon/pty-session-id'
 import { LocalPtyProvider } from '../../../providers/local-pty/local-pty-provider'
 import {
@@ -117,9 +120,14 @@ export async function preparePtyIpcSpawnPreflight(ctx: PtyIpcSpawnState): Promis
   ctx.codexSelectionTarget = target.codexSelectionTarget
   ctx.spawnTiming.mark('preflight')
   args.env = withClaudeProfileTerminalEnv(args.env, ctx.codexSelectionTarget)
+  // A launch that chose its Claude account keeps it; otherwise the selected account's auth applies.
+  const pinnedClaudeAuth = ctx.isClaudeLaunch
+    ? await preparePinnedClaudeLaunchAuth(args.env, ctx.codexSelectionTarget)
+    : null
   ctx.claudeAuth =
-    ctx.isClaudeLaunch && ctx.deps.prepareClaudeAuth
+    pinnedClaudeAuth ??
+    (ctx.isClaudeLaunch && ctx.deps.prepareClaudeAuth
       ? await ctx.deps.prepareClaudeAuth(ctx.codexSelectionTarget)
-      : null
+      : null)
   ctx.spawnTiming.mark('auth')
 }

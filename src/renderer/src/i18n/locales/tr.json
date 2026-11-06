@@ -23200,5 +23200,12 @@
     "sameAsTextDefault": "Varsayılanla aynı · {{value0}}",
     "chatChoicesNote": "CLI bayrağı olmayan {{agent}} modeli veya çaba seçimleri sohbetlere uygulanır.",
     "composedChoicesNote": "{{agent}} için çaba ve hız seçimleri model argümanına dahil edilir."
+  },
+  "claudeAccountLaunch": {
+    "menu": "Hesapla Claude",
+    "selected": "Seçili hesap",
+    "started": "Claude {{value0}} ile başlatıldı",
+    "unsupported": "Claude hesabı seçimi yalnızca yerel terminallerde çalışır.",
+    "unsupportedDetail": "Bu çalışma alanında Claude'u o hesapla başlatmak için seçili hesabı değiştirin."
   }
 }

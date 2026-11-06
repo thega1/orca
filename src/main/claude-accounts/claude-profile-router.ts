@@ -44,6 +44,7 @@ import {
   type ClaudeFolderLogin
 } from './claude-account-folder'
 import { resolveLoginShellEnvironment } from '../startup/login-shell-environment'
+import type { ClaudePinnedLaunchContext } from './claude-profile-pinned-launch'
 
 export type ClaudeProfileRouterSettings = Pick<
   GlobalSettings,
@@ -294,6 +295,17 @@ export class ClaudeProfileRouter {
       return { ...base, ...this.launchEnv() }
     } catch {
       return base
+    }
+  }
+
+  /** Launches pinned to one account ("+" menu) share this router's setup queue and shell env. */
+  pinnedLaunchContext(): ClaudePinnedLaunchContext {
+    return {
+      env: () => this.env,
+      envReady: this.envReady,
+      describe: (accountId) => this.describe(accountId),
+      setUp: (profile) => this.setUp(profile),
+      refreshWaitMs: this.args.refreshWaitMs
     }
   }
 

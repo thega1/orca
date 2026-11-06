@@ -22936,5 +22936,12 @@
   "wslDistroHold": {
     "terminalStopped": "WSL 发行版 {{distro}} 已停止，因此 Orca 没有启动此终端。请启动该发行版后重试。",
     "terminalUnverifiable": "Orca 无法确认 WSL 发行版 {{distro}} 是否正在运行，因此没有启动此终端。请启动该发行版后重试。"
+  },
+  "claudeAccountLaunch": {
+    "menu": "用指定账号启动 Claude",
+    "selected": "当前选中的账号",
+    "started": "已用 {{value0}} 启动 Claude",
+    "unsupported": "只有本地终端可以选择 Claude 账号。",
+    "unsupportedDetail": "要在这个工作区用该账号启动 Claude，请切换当前选中的账号。"
   }
 }

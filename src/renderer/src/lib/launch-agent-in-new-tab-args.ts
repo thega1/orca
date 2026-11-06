@@ -51,6 +51,8 @@ export type LaunchAgentInNewTabArgs = LaunchAgentInNewTabRequest & {
   beforeSurfaceOpen?: (
     surface: { kind: 'local-terminal' } | { kind: 'host-published' }
   ) => boolean | void
+  /** Claude terminal only: start on this saved Claude account instead of the selected one. */
+  claudeAccountId?: string
   /** Opens instead of this agent's terminal when the host declines its structured chat. */
   onStructuredHostDeclined?: () => StructuredLaunchTerminal
 }

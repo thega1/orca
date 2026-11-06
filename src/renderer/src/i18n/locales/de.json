@@ -23217,5 +23217,12 @@
     "sameAsTextDefault": "Wie Standard · {{value0}}",
     "chatChoicesNote": "Modell- oder Effort-Auswahlen für {{agent}} ohne CLI-Flag gelten für Chats.",
     "composedChoicesNote": "Effort- und Geschwindigkeitsauswahlen für {{agent}} sind im Modellargument enthalten."
+  },
+  "claudeAccountLaunch": {
+    "menu": "Claude mit Konto",
+    "selected": "Ausgewähltes Konto",
+    "started": "Claude mit {{value0}} gestartet",
+    "unsupported": "Ein Claude-Konto lässt sich nur für lokale Terminals wählen.",
+    "unsupportedDetail": "Wechsle das ausgewählte Konto, um Claude in diesem Workspace damit zu starten."
   }
 }

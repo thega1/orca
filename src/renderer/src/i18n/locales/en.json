@@ -23892,5 +23892,12 @@
   },
   "checks": {
     "rerunUnsuccessful": "Rerun unsuccessful"
+  },
+  "claudeAccountLaunch": {
+    "menu": "Claude on account",
+    "selected": "Selected account",
+    "started": "Claude started on {{value0}}",
+    "unsupported": "Choosing a Claude account works only for local terminals.",
+    "unsupportedDetail": "Switch the selected account to start Claude on it in this workspace."
   }
 }

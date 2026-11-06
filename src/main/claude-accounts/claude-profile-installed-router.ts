@@ -5,6 +5,9 @@ import type { ClaudeProfileRouter } from './claude-profile-router'
 import type { ClaudeWslProfileRouter } from './claude-profile-wsl-router'
 import type { ClaudeAccountSelectionTarget } from './runtime-selection'
 import type { ClaudeObservedConfigDirs } from './claude-observed-config-dirs'
+import type { ClaudeRuntimeAuthPreparation } from './runtime-auth/runtime-auth-types'
+import { readClaudePinnedAccountId } from '../../shared/claude-profile-routing'
+import { pinnedClaudeTerminalEnv, preparePinnedClaudeLaunch } from './claude-profile-pinned-launch'
 
 let installed: ClaudeProfileRouter | undefined
 
@@ -41,8 +44,31 @@ export function withClaudeProfileTerminalEnv<Env extends Record<string, string> 
   env: Env,
   target: ClaudeAccountSelectionTarget
 ): Env | Record<string, string> {
-  const profileEnv = installed?.terminalEnv(target)
+  const pinned = pinnedHostAccountId(env, target)
+  const profileEnv =
+    (pinned !== null && installed ? pinnedClaudeTerminalEnv(installed, pinned) : null) ??
+    installed?.terminalEnv(target)
   return profileEnv ? { ...env, ...profileEnv } : env
+}
+
+/** A launch pinned to a host account ("+" menu → Claude account); WSL panes keep their distro's routing. */
+function pinnedHostAccountId(
+  env: Record<string, string> | undefined,
+  target: ClaudeAccountSelectionTarget | undefined
+): string | null {
+  if (target?.runtime === 'wsl') {
+    return null
+  }
+  return readClaudePinnedAccountId(env)
+}
+
+/** Auth for a direct `claude` spawn pinned to an account; null keeps the selected account's auth. */
+export async function preparePinnedClaudeLaunchAuth(
+  env: Record<string, string> | undefined,
+  target: ClaudeAccountSelectionTarget | undefined
+): Promise<ClaudeRuntimeAuthPreparation | null> {
+  const pinned = pinnedHostAccountId(env, target)
+  return pinned !== null && installed ? preparePinnedClaudeLaunch(installed, pinned) : null
 }
 
 /** The user's CLAUDE_CONFIG_DIR from the login shell, folders Orca saw Claude use, and account homes. */

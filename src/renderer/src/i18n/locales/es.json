@@ -23624,5 +23624,12 @@
   "wslDistroHold": {
     "terminalStopped": "La distribución WSL {{distro}} está detenida, así que Orca no inició esta terminal. Inicia la distribución y vuelve a intentarlo.",
     "terminalUnverifiable": "Orca no pudo comprobar si la distribución WSL {{distro}} está en ejecución, así que no inició esta terminal. Inicia la distribución y vuelve a intentarlo."
+  },
+  "claudeAccountLaunch": {
+    "menu": "Claude con cuenta",
+    "selected": "Cuenta seleccionada",
+    "started": "Claude iniciado con {{value0}}",
+    "unsupported": "Elegir una cuenta de Claude solo funciona en terminales locales.",
+    "unsupportedDetail": "Cambia la cuenta seleccionada para iniciar Claude con ella en este espacio de trabajo."
   }
 }

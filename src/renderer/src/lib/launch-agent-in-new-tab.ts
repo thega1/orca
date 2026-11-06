@@ -19,6 +19,12 @@ import { TUI_AGENT_CONFIG } from '../../../shared/agent-launch/catalog/tui-agent
 import { resolveAgentLaunchExecutionContext } from '@/lib/launch-agent-execution-context'
 import { launchStructuredAgentFromNewTab } from '@/lib/launch-agent-in-new-tab-structured-route'
 import { workspaceKindForWorktreeId } from '@/lib/agent-launch-route-input'
+import { CLAUDE_PINNED_ACCOUNT_ENV } from '../../../shared/claude-profile-routing'
+import { getLocalProjectExecutionRuntimeContext } from '@/lib/local-preflight-context'
+import {
+  pinClaudeTabToAccount,
+  refuseUnpinnableClaudeAccountLaunch
+} from '@/lib/claude-pinned-account-tabs'
 import {
   launchOnceHostAnswered,
   routeNewTabLaunch,
@@ -153,6 +159,17 @@ export function launchAgentInNewTabWithOutcome(
     })
   args.focusIntent?.cancel()
   const runtimeEnvironmentId = runtimeEnvironmentIdOrLocalUnlessTwin(store, worktreeId)
+  const claudeAccountId = agent === 'claude' ? args.claudeAccountId : undefined
+  // Why refuse: only a local terminal carries the chosen account; elsewhere it would run on another.
+  if (
+    claudeAccountId !== undefined &&
+    (isRemote ||
+      isWebRuntimeSessionActive(runtimeEnvironmentId) ||
+      runsInWsl(getLocalProjectExecutionRuntimeContext(store, worktreeId)))
+  ) {
+    refuseUnpinnableClaudeAccountLaunch()
+    return null
+  }
   if (isWebRuntimeSessionActive(runtimeEnvironmentId)) {
     if (beforeSurfaceOpen?.({ kind: 'host-published' }) === false) {
       return null
@@ -190,6 +207,7 @@ export function launchAgentInNewTabWithOutcome(
     return null
   }
   if (
+    claudeAccountId === undefined &&
     pasteDraftAfterLaunch !== null &&
     newTabPromptLaunchesThroughHost({ promptDelivery, pastesPrompt: true, isRemote })
   ) {
@@ -224,7 +242,16 @@ export function launchAgentInNewTabWithOutcome(
     ...(activate === false ? { activate: false } : {}),
     pendingStartup: {
       command: startupPlan.launchCommand,
-      ...(startupPlan.env ? { env: startupPlan.env } : {}),
+      ...(startupPlan.env || claudeAccountId !== undefined
+        ? {
+            env: {
+              ...startupPlan.env,
+              ...(claudeAccountId !== undefined
+                ? { [CLAUDE_PINNED_ACCOUNT_ENV]: claudeAccountId }
+                : {})
+            }
+          }
+        : {}),
       launchConfig: startupPlan.launchConfig,
       launchAgent: agent,
       ...(agentArgs !== undefined ? { agentArgsOverride: agentArgs } : {}),
@@ -241,6 +268,9 @@ export function launchAgentInNewTabWithOutcome(
       }
     }
   })
+  if (claudeAccountId !== undefined) {
+    pinClaudeTabToAccount(tab.id, claudeAccountId)
+  }
   if (initialCwd?.trim()) {
     // Why: queue before mount so local, WSL, and SSH continuations preserve their subdirectory.
     store.queueTabInitialCwd(tab.id, initialCwd)
@@ -288,4 +318,8 @@ export function launchAgentInNewTabWithOutcome(
 export function launchAgentInNewTab(args: LaunchAgentInNewTabArgs): LaunchAgentInNewTabResult {
   const result = launchAgentInNewTabWithOutcome(args, false)
   return result && 'refused' in result ? null : result
+}
+
+function runsInWsl(runtime: ReturnType<typeof getLocalProjectExecutionRuntimeContext>): boolean {
+  return runtime?.status === 'resolved' && runtime.runtime.kind === 'wsl'
 }

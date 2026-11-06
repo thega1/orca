@@ -42,6 +42,8 @@ const fsAllowances: Record<string, readonly string[]> = {
   'claude-accounts/claude-observed-config-dirs.ts': ['writeFileAtomically'],
   'claude-accounts/claude-profile-paths.ts': ['mkdirSync', 'writeFileAtomically'],
   'claude-accounts/claude-profile-router.ts': ['mkdirSync', 'rmSync', 'writeFileAtomically'],
+  // Writes only a pinned pane's account pointer, as the router writes the selected one.
+  'claude-accounts/claude-profile-pinned-launch.ts': ['mkdirSync', 'writeFileAtomically'],
   'claude-accounts/claude-account-folder.ts': ['rmSync', 'rmdirSync', 'unlinkSync'],
   // This write targets process stdin, not a file.
   'claude-accounts/claude-command-process.ts': ['write'],
